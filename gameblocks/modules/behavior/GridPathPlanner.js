@@ -24,7 +24,11 @@ export function normalizeBlockedCells(blocked = []) {
 }
 
 function wrapDelta(delta, size) {
-  return Math.min(Math.abs(delta), size - Math.abs(delta));
+  if (!Number.isFinite(size) || size <= 0) return 0;
+  const period = size;
+  let wrapped = delta % period;
+  if (wrapped < 0) wrapped += period;
+  return Math.min(wrapped, period - wrapped);
 }
 
 function priorityInsert(open, entry) {
