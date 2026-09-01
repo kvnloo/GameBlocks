@@ -27,6 +27,20 @@ function wrapDelta(delta, size) {
   return Math.min(Math.abs(delta), size - Math.abs(delta));
 }
 
+function wrapCoord(value, size) {
+  if (!Number.isFinite(size) || size <= 0) return 0;
+  let wrapped = value % size;
+  if (wrapped < 0) wrapped += size;
+  return wrapped;
+}
+
+function wrapCell(cell, board) {
+  return {
+    right: wrapCoord(cell.right, board.columns),
+    forward: wrapCoord(cell.forward, board.rows),
+  };
+}
+
 function priorityInsert(open, entry) {
   let index = open.length;
   while (index > 0 && open[index - 1].f > entry.f) {
@@ -124,8 +138,8 @@ export class GridPathPlanner {
   ) {
     if (!start || !goal) return null;
 
-    const startCell = cloneCell(start);
-    const goalCell = cloneCell(goal);
+    const startCell = wrap ? wrapCell(cloneCell(start), this) : cloneCell(start);
+    const goalCell = wrap ? wrapCell(cloneCell(goal), this) : cloneCell(goal);
     const startKey = gridCellKey(startCell);
     const goalKey = gridCellKey(goalCell);
     const blockedKeys = normalizeBlockedCells(blocked);
@@ -198,7 +212,7 @@ export class GridPathPlanner {
       return { count: 0, cells: [] };
     }
 
-    const startCell = cloneCell(start);
+    const startCell = wrap ? wrapCell(cloneCell(start), this) : cloneCell(start);
     const startKey = gridCellKey(startCell);
     const blockedKeys = normalizeBlockedCells(blocked);
     if (allowStartOccupied) blockedKeys.delete(startKey);
