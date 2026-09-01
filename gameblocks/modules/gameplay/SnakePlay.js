@@ -33,9 +33,11 @@ function clonePlayer(player) {
 }
 
 function createPlayer({ playerId, segments }) {
+  const nextSegments = cloneCells(segments);
   return {
     playerId,
-    segments: cloneCells(segments),
+    segments: nextSegments,
+    initialSegments: cloneCells(nextSegments),
     alive: true,
   };
 }
@@ -61,6 +63,14 @@ export class SnakePlay {
   movePlayer({ playerId, segments }) {
     const player = this._getPlayer(playerId);
     player.segments = cloneCells(segments);
+  }
+
+  reset() {
+    this.items.clear();
+    for (const player of this.players.values()) {
+      player.segments = cloneCells(player.initialSegments);
+      player.alive = true;
+    }
   }
 
   addItem({ cell, growth = 1 }) {
