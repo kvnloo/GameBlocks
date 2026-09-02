@@ -112,15 +112,21 @@ export class SnakeMotionController {
     direction = this.initialDirection,
     startCell = this.startCell,
     pendingGrowth = 0,
-  }) {
+  } = {}) {
 
-    this.direction = {
+    this.initialLength = Math.max(2, Math.floor(initialLength));
+    this.initialDirection = {
       right: direction.right,
       forward: direction.forward,
     };
+    this.startCell = cloneCell(startCell);
+    this.direction = {
+      right: this.initialDirection.right,
+      forward: this.initialDirection.forward,
+    };
     this.segments = segments
       ? cloneCells(segments)
-      : createDefaultSegments(initialLength, direction, startCell);
+      : createDefaultSegments(this.initialLength, this.direction, this.startCell);
     this.pendingGrowth = Math.max(0, Math.floor(pendingGrowth));
     return this.getSegments();
   }
