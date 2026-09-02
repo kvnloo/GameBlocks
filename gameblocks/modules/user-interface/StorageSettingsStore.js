@@ -58,9 +58,10 @@ export class JsonSettingsStore {
 
   load() {
     const saved = readJsonStorageItem(this.storage, this.storageKey, null);
+    this.settings = { ...this.defaults };
     if (saved && typeof saved === 'object') {
       this.settings = {
-        ...this.settings,
+        ...this.defaults,
         ...saved,
       };
     }
