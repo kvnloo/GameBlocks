@@ -79,6 +79,10 @@ mkdir -p ~/.claude/skills/gameblocks && cp -R gameblocks/. ~/.claude/skills/game
 https://github.com/user-attachments/assets/98d22d80-06b6-49ac-8b33-2215ccb42222
 
 
+## 🤝 Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the MIT contribution path and how to run module tests.
+
 ## 📜 License
 
 GameBlocks is released under the [MIT License](LICENSE).
