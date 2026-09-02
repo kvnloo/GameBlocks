@@ -31,6 +31,13 @@ function wrapDelta(delta, size) {
   return Math.min(wrapped, period - wrapped);
 }
 
+function wrapCoord(value, size) {
+  if (!Number.isFinite(size) || size <= 0) return 0;
+  let wrapped = value % size;
+  if (wrapped < 0) wrapped += size;
+  return wrapped;
+}
+
 function priorityInsert(open, entry) {
   let index = open.length;
   while (index > 0 && open[index - 1].f > entry.f) {
@@ -47,10 +54,8 @@ function stepCell(cell, direction, board, wrap, navigation) {
   };
 
   if (wrap) {
-    if (next.right < 0) next.right = board.columns - 1;
-    if (next.right >= board.columns) next.right = 0;
-    if (next.forward < 0) next.forward = board.rows - 1;
-    if (next.forward >= board.rows) next.forward = 0;
+    next.right = wrapCoord(next.right, board.columns);
+    next.forward = wrapCoord(next.forward, board.rows);
     return next;
   }
 
